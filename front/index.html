@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-side-theme="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>机房综合管理系统</title>
+  <!-- 字体图标 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- 全局样式（包含 Reset、CSS变量、布局、组件、响应式） -->
+  <link rel="stylesheet" href="css/common.css">
+  <!-- 后台页面公共样式 -->
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <!-- ========== 最外层容器 ========== -->
+  <div id="app" class="app-wrapper">
+    
+    <!-- ========== 移动端遮罩层 ========== -->
+    <div id="drawer-bg" class="drawer-bg" style="display:none;"></div>
+
+    <!-- ========== 左侧：侧边栏 ========== -->
+    <aside id="sidebar" class="sidebar-container">
+      <!-- Logo 区域 -->
+      <div class="sidebar-logo-container">
+        <a href="#" class="sidebar-logo-link">
+          <span class="sidebar-logo sidebar-logo-default" id="system-logo-default"><i class="fa fa-server"></i></span>
+          <img alt="系统 Logo" class="sidebar-logo" id="system-logo-img" style="display:none;">
+          <h1 class="sidebar-title">机房管理系统</h1>
+        </a>
+      </div>
+      <!-- 菜单区域：由 js/menu.js 动态渲染 -->
+      <div class="sidebar-menu-wrapper" id="sidebar-menu"></div>
+    </aside>
+
+    <!-- ========== 右侧：主容器 ========== -->
+    <div id="main-container" class="main-container has-tags-view">
+      
+      <!-- 固定头部区域 -->
+      <div id="fixed-header" class="fixed-header">
+        
+        <!-- 顶部导航栏 -->
+        <nav id="navbar" class="navbar">
+          <!-- 汉堡按钮 -->
+          <span class="hamburger-container" id="hamburger-btn">
+            <svg class="hamburger-icon" viewBox="0 0 1024 1024" width="20" height="20">
+              <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM142.4 642.1L298.7 519a8.84 8.84 0 0 0 0-13.9L142.4 381.9c-5.8-4.6-14.4-.5-14.4 6.9v246.3a8.9 8.9 0 0 0 14.4 7z" fill="currentColor"/>
+            </svg>
+          </span>
+          <!-- 面包屑导航 -->
+          <!-- 面包屑由 js/navbar.js 动态渲染 -->
+          <div id="breadcrumb" class="breadcrumb-container"></div>
+          <!-- 右侧菜单 -->
+          <div class="right-menu">
+            <!-- 用户头像下拉 -->
+            <div class="avatar-container" id="avatar-dropdown">
+              <div class="avatar-wrapper">
+                <span class="user-avatar-default"><i class="fa fa-user"></i></span>
+                <img class="user-avatar" alt="用户头像" style="display:none;">
+                <span class="user-nickname">未登录</span>
+                <i class="fa fa-caret-down" style="font-size:12px;"></i>
+              </div>
+              <ul class="dropdown-menu" id="user-dropdown-menu" style="display:none;">
+                <li data-action="profile"><i class="fa fa-user"></i> 个人中心</li>
+                <li data-action="settings" id="btn-layout-settings"><i class="fa fa-cog"></i> 布局设置</li>
+                <li class="dropdown-divider"></li>
+                <li data-action="logout"><i class="fa fa-sign-out"></i> 退出登录</li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+        <!-- 标签页栏 -->
+        <div id="tags-view-container" class="tags-view-container">
+          <span class="tags-nav-btn tags-nav-btn--left disabled" id="tags-scroll-left">
+            <i class="fa fa-chevron-left"></i>
+          </span>
+          <!-- 标签由 js/tagsview.js 动态渲染 -->
+          <div class="tags-view-wrapper" id="tags-view-wrapper"></div>
+          <span class="tags-nav-btn tags-nav-btn--right disabled" id="tags-scroll-right">
+            <i class="fa fa-chevron-right"></i>
+          </span>
+        </div>
+      </div>
+
+      <!-- 主内容区 -->
+      <!-- 页面内容 + 底部版权由 js/router.js 动态加载 -->
+      <section id="app-main" class="app-main"></section>
+
+    </div>
+
+    <!-- ========== 右侧：布局设置抽屉 ========== -->
+    <div id="settings-drawer-overlay" class="settings-overlay" style="display:none;"></div>
+    <div id="settings-drawer" class="settings-drawer" style="display:none;">
+      <div class="drawer-container">
+        <div class="drawer-section">
+          <h3 class="drawer-title">主题风格设置</h3>
+          <div class="theme-style-selector">
+            <div class="theme-style-item selected" data-theme="theme-dark">
+              <span class="check-mark">✓</span>
+            </div>
+            <div class="theme-style-item" data-theme="theme-light">
+              <span class="check-mark">✓</span>
+            </div>
+          </div>
+          <div class="drawer-item">
+            <span>主题颜色</span>
+            <input type="color" id="theme-color-picker" value="#409EFF" class="color-picker">
+          </div>
+        </div>
+        <hr>
+        <h3 class="drawer-title">系统布局配置</h3>
+        <div class="drawer-item">
+          <span>开启页签</span>
+          <label class="switch"><input type="checkbox" id="setting-tags-view" checked><span class="slider"></span></label>
+        </div>
+        <div class="drawer-item">
+          <span>固定 Header</span>
+          <label class="switch"><input type="checkbox" id="setting-fixed-header"><span class="slider"></span></label>
+        </div>
+        <div class="drawer-item">
+          <span>显示 Logo</span>
+          <label class="switch"><input type="checkbox" id="setting-sidebar-logo" checked><span class="slider"></span></label>
+        </div>
+        <div class="drawer-item">
+          <span>显示底部版权</span>
+          <label class="switch"><input type="checkbox" id="setting-footer-visible" checked><span class="slider"></span></label>
+        </div>
+        <hr>
+        <button class="btn btn-primary" id="btn-save-settings">保存配置</button>
+        <button class="btn btn-default" id="btn-reset-settings">重置配置</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ========== 脚本引入 ========== -->
+  <script src="js/utils.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/menu.js"></script>
+  <script src="js/sidebar.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/tagsview.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/person.js"></script>
+  <script src="js/permission.js"></script>
+  <script src="js/goods.js"></script>
+  <script src="js/equipment.js"></script>
+  <script src="js/attendance.js"></script>
+  <script src="js/user.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      App.init();
+    });
+  </script>
+</body>
+</html>

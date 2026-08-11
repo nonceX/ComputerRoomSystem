@@ -1,0 +1,37 @@
+<div class="search-card">
+  <div class="permission-form">
+    <div class="form-item">
+      <label>选择角色</label>
+      <select id="perm-role-select">
+        <option value="admin">管理员</option>
+        <option value="user">普通用户</option>
+      </select>
+    </div>
+    <div class="form-item">
+      <button type="button" class="btn btn-primary" id="btn-perm-save"><i class="fa fa-check"></i> 保存权限</button>
+    </div>
+  </div>
+</div>
+
+<div class="table-card">
+  <h3 class="panel-title">权限配置</h3>
+  <p class="perm-tip">勾选该角色拥有的菜单操作权限，勾选父级会自动联动子级。</p>
+  <div id="perm-tree"></div>
+</div>
+
+<div class="table-card">
+  <h3 class="panel-title">用户角色管理（root 提权）</h3>
+  <p class="perm-tip"><i class="fa fa-info-circle"></i> 仅 root 账号可将普通用户提为管理员，或将管理员降为普通用户。</p>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>账号</th>
+        <th>姓名</th>
+        <th>部门</th>
+        <th>当前角色</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody id="perm-user-tbody"></tbody>
+  </table>
+</div>

@@ -1,0 +1,169 @@
+<div class="stat-cards">
+  <div class="stat-card">
+    <div class="stat-icon stat-icon--green"><i class="fa fa-check-circle"></i></div>
+    <div class="stat-info">
+      <div class="stat-label">正常设备</div>
+      <div class="stat-value" id="eq-stat-normal">0</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon stat-icon--orange"><i class="fa fa-wrench"></i></div>
+    <div class="stat-info">
+      <div class="stat-label">维修中</div>
+      <div class="stat-value" id="eq-stat-repair">0</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon stat-icon--red"><i class="fa fa-times-circle"></i></div>
+    <div class="stat-info">
+      <div class="stat-label">已报废</div>
+      <div class="stat-value" id="eq-stat-scrapped">0</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon stat-icon--blue"><i class="fa fa-cubes"></i></div>
+    <div class="stat-info">
+      <div class="stat-label">设备总数</div>
+      <div class="stat-value" id="eq-stat-total">0</div>
+    </div>
+  </div>
+</div>
+
+<div class="search-card">
+  <form class="search-form" id="eq-search-form">
+    <div class="form-item">
+      <label>设备名称</label>
+      <input type="text" id="eq-search-name" placeholder="请输入设备名称">
+    </div>
+    <div class="form-item">
+      <label>状态</label>
+      <select id="eq-search-status">
+        <option value="">全部</option>
+        <option value="正常">正常</option>
+        <option value="维修">维修</option>
+        <option value="报废">报废</option>
+      </select>
+    </div>
+    <div class="form-item">
+      <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> 搜索</button>
+    </div>
+    <div class="form-item">
+      <button type="button" class="btn" id="btn-eq-reset"><i class="fa fa-refresh"></i> 重置</button>
+    </div>
+  </form>
+</div>
+
+<div class="table-card">
+  <div class="table-toolbar">
+    <button type="button" class="btn btn-primary btn-sm" id="btn-eq-add"><i class="fa fa-plus"></i> 登记设备</button>
+    <button type="button" class="btn btn-success btn-sm" id="btn-eq-in"><i class="fa fa-arrow-down"></i> 入库</button>
+    <button type="button" class="btn btn-warning btn-sm" id="btn-eq-out"><i class="fa fa-arrow-up"></i> 出库</button>
+  </div>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>编号</th>
+        <th>设备名称</th>
+        <th>型号</th>
+        <th>数量</th>
+        <th>状态</th>
+        <th>位置</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody id="eq-tbody"></tbody>
+  </table>
+  <div class="pagination" id="eq-pagination"></div>
+</div>
+
+<div class="table-card">
+  <h3 class="panel-title">出入库记录</h3>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>日期</th>
+        <th>设备</th>
+        <th>类型</th>
+        <th>数量</th>
+        <th>操作人</th>
+        <th>备注</th>
+      </tr>
+    </thead>
+    <tbody id="eq-record-tbody"></tbody>
+  </table>
+</div>
+
+<!-- 登记/编辑设备弹窗 -->
+<div class="modal-overlay" id="eq-modal-overlay" style="display:none;">
+  <div class="modal">
+    <div class="modal-header">
+      <span id="eq-modal-title">登记设备</span>
+      <span class="modal-close" id="eq-modal-close"><i class="fa fa-times"></i></span>
+    </div>
+    <div class="modal-body">
+      <div class="form-item">
+        <label>设备名称</label>
+        <input type="text" id="eq-name" placeholder="请输入设备名称">
+      </div>
+      <div class="form-item">
+        <label>编号</label>
+        <input type="text" id="eq-no" placeholder="请输入设备编号">
+      </div>
+      <div class="form-item">
+        <label>型号</label>
+        <input type="text" id="eq-model" placeholder="请输入型号">
+      </div>
+      <div class="form-item">
+        <label>初始库存</label>
+        <input type="number" id="eq-quantity" min="0" step="1" placeholder="请输入初始库存">
+      </div>
+      <div class="form-item">
+        <label>位置</label>
+        <input type="text" id="eq-location" placeholder="如：A01 / B03">
+      </div>
+      <div class="form-item">
+        <label>状态</label>
+        <select id="eq-status">
+          <option value="正常">正常</option>
+          <option value="维修">维修</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" id="btn-eq-save">保存</button>
+      <button type="button" class="btn" id="btn-eq-cancel">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- 入库/出库弹窗（共用） -->
+<div class="modal-overlay" id="eq-flow-overlay" style="display:none;">
+  <div class="modal">
+    <div class="modal-header">
+      <span id="eq-flow-title">入库</span>
+      <span class="modal-close" id="eq-flow-close"><i class="fa fa-times"></i></span>
+    </div>
+    <div class="modal-body">
+      <div class="form-item">
+        <label>设备</label>
+        <select id="eq-flow-device"></select>
+      </div>
+      <div class="form-item">
+        <label>数量</label>
+        <input type="number" id="eq-flow-quantity" min="1" placeholder="请输入数量">
+      </div>
+      <div class="form-item">
+        <label>日期</label>
+        <input type="date" id="eq-flow-date">
+      </div>
+      <div class="form-item">
+        <label>备注</label>
+        <input type="text" id="eq-flow-remark" placeholder="选填">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" id="btn-eq-flow-save">保存</button>
+      <button type="button" class="btn" id="btn-eq-flow-cancel">取消</button>
+    </div>
+  </div>
+</div>

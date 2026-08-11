@@ -1,0 +1,85 @@
+<div class="search-card">
+  <div class="attendance-punch">
+    <div>
+      <div class="attendance-time" id="atd-time">--:--:--</div>
+      <div class="attendance-date" id="atd-date">----年--月--日 星期-</div>
+      <div class="attendance-status" id="atd-status">今日尚未打卡</div>
+    </div>
+    <div class="attendance-actions">
+      <button type="button" class="btn btn-success" id="btn-atd-in" disabled><i class="fa fa-sign-in"></i> 机房参会打卡 </button>
+      <button type="button" class="btn btn-warning" id="btn-atd-out" disabled><i class="fa fa-sign-out"></i> 机房结束打卡 </button>
+    </div>
+  </div>
+</div>
+
+<div class="stat-cards">
+  <div class="stat-card">
+    <div class="stat-icon stat-icon--green"><i class="fa fa-check-circle"></i></div>
+    <div class="stat-info">
+      <div class="stat-label">本月出勤</div>
+      <div class="stat-value" id="atd-stat-days">0</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon stat-icon--orange"><i class="fa fa-hourglass-half"></i></div>
+    <div class="stat-info">
+      <div class="stat-label">迟到次数</div>
+      <div class="stat-value" id="atd-stat-late">0</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon stat-icon--red"><i class="fa fa-fast-backward"></i></div>
+    <div class="stat-info">
+      <div class="stat-label">早退次数</div>
+      <div class="stat-value" id="atd-stat-early">0</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon stat-icon--blue"><i class="fa fa-calendar-check"></i></div>
+    <div class="stat-info">
+      <div class="stat-label">正常参会</div>
+      <div class="stat-value" id="atd-stat-normal">0</div>
+    </div>
+  </div>
+</div>
+
+<div class="search-card">
+  <form class="search-form" id="atd-search-form">
+    <div class="form-item">
+      <label>月份</label>
+      <input type="month" id="atd-search-month">
+    </div>
+    <div class="form-item">
+      <label>状态</label>
+      <select id="atd-search-status">
+        <option value="">全部</option>
+        <option value="正常">正常</option>
+        <option value="迟到">迟到</option>
+        <option value="早退">早退</option>
+        <option value="缺卡">缺卡</option>
+      </select>
+    </div>
+    <div class="form-item">
+      <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> 搜索</button>
+    </div>
+    <div class="form-item">
+      <button type="button" class="btn" id="btn-atd-reset"><i class="fa fa-refresh"></i> 重置</button>
+    </div>
+  </form>
+</div>
+
+<div class="table-card">
+  <h3 class="panel-title">我的考勤记录</h3>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>日期</th>
+        <th>机房参会打卡</th>
+        <th>机房结束打卡</th>
+        <th>状态</th>
+      </tr>
+    </thead>
+    <tbody id="atd-tbody"></tbody>
+  </table>
+  <div class="pagination" id="atd-pagination"></div>
+</div>

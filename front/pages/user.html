@@ -1,0 +1,35 @@
+<div class="table-card">
+  <div class="profile-header">
+    <div class="profile-avatar-wrap" id="profile-avatar-wrap" title="点击修改头像">
+      <i class="fa fa-user profile-avatar-icon" id="profile-avatar-icon"></i>
+      <img src="" class="profile-avatar-img" id="profile-avatar-img" alt="avatar" style="display:none;">
+      <span class="profile-avatar-edit"><i class="fa fa-camera"></i> 修改头像</span>
+    </div>
+    <div>
+      <div class="profile-name" id="profile-name">管理员</div>
+      <div class="profile-detail" id="profile-username">账号：admin</div>
+    </div>
+  </div>
+  <input type="file" id="profile-avatar-file" accept="image/*" style="display:none;">
+</div>
+
+<div class="table-card">
+  <h3 class="panel-title">修改密码</h3>
+  <div class="profile-form">
+    <div class="form-item">
+      <label>旧密码</label>
+      <input type="password" id="user-old-pwd" placeholder="请输入旧密码">
+    </div>
+    <div class="form-item">
+      <label>新密码</label>
+      <input type="password" id="user-new-pwd" placeholder="请输入新密码（不少于 6 位）">
+    </div>
+    <div class="form-item">
+      <label>确认新密码</label>
+      <input type="password" id="user-confirm-pwd" placeholder="请再次输入新密码">
+    </div>
+    <div class="form-item">
+      <button type="button" class="btn btn-primary" id="btn-user-save-pwd"><i class="fa fa-check"></i> 保存</button>
+    </div>
+  </div>
+</div>

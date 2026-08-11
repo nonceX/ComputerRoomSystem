@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>注册 - 机房综合管理系统</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card register-card">
+      <div class="login-header">
+        <div class="login-logo"><i class="fa fa-user-plus"></i></div>
+        <h1 class="login-title">注册账号</h1>
+        <p class="login-subtitle">创建机房综合管理系统账号</p>
+      </div>
+
+      <form id="register-form" novalidate>
+        <div class="form-error" id="reg-error"></div>
+
+        <div class="form-item">
+          <i class="fa fa-user"></i>
+          <input type="text" id="reg-username" placeholder="请输入账号">
+        </div>
+
+        <div class="form-item">
+          <i class="fa fa-lock"></i>
+          <input type="password" id="reg-password" placeholder="请设置密码（不少于 6 位）">
+        </div>
+
+        <div class="form-item">
+          <i class="fa fa-check"></i>
+          <input type="password" id="reg-confirm" placeholder="请再次输入密码">
+        </div>
+
+        <div class="form-item">
+          <i class="fa fa-id-card"></i>
+          <input type="text" id="reg-name" placeholder="请输入姓名">
+        </div>
+
+        <div class="form-item">
+          <i class="fa fa-id-badge"></i>
+          <input type="text" id="reg-no" placeholder="请输入工号">
+        </div>
+
+
+        <div class="form-item">
+          <i class="fa fa-building"></i>
+          <select id="reg-department">
+            <option value="">请选择部门</option>
+            <option value="技术部">技术部</option>
+            <option value="运维部">运维部</option>
+            <option value="后勤部">后勤部</option>
+          </select>
+        </div>
+
+        <div class="form-item">
+          <i class="fa fa-phone"></i>
+          <input type="text" id="reg-phone" placeholder="请输入联系电话">
+        </div>
+
+        <p class="register-tip">新注册账号默认为<strong>普通用户</strong>，后续由 root 账号授权提权</p>
+
+        <button type="submit" class="btn-login">
+          <i class="fa fa-check"></i> 注 册
+        </button>
+        <button type="button" class="btn-cancel" id="btn-cancel">
+          <i class="fa fa-times"></i> 取 消
+        </button>
+      </form>
+
+      <div class="login-footer">Copyright © 2026 机房综合管理系统 All Rights Reserved.</div>
+    </div>
+  </div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/register.js"></script>
+</body>
+</html>

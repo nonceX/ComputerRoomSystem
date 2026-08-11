@@ -1,0 +1,228 @@
+// 人员管理页面逻辑（示例数据，后续接入后端 API 后替换）
+const PersonPage = {
+  PAGE_SIZE: 10,
+  currentPage: 1,
+  keyword: { name: '', dept: '', role: '' },
+  editingId: null,
+
+  data: [
+    { id: 1, name: '张三', no: '001', dept: '技术部', role: '管理员', phone: '13800131234' },
+    { id: 2, name: '李四', no: '002', dept: '运维部', role: '普通用户', phone: '13900135678' },
+    { id: 3, name: '王五', no: '003', dept: '后勤部', role: '普通用户', phone: '13700139012' },
+    { id: 4, name: '赵六', no: '004', dept: '技术部', role: '普通用户', phone: '13600134567' },
+    { id: 5, name: '孙七', no: '005', dept: '运维部', role: '普通用户', phone: '13500137890' },
+    { id: 6, name: '周八', no: '006', dept: '技术部', role: '普通用户', phone: '13400132345' },
+    { id: 7, name: '吴九', no: '007', dept: '后勤部', role: '普通用户', phone: '13300135678' },
+    { id: 8, name: '郑十', no: '008', dept: '运维部', role: '普通用户', phone: '13200138901' },
+    { id: 9, name: '钱一', no: '009', dept: '技术部', role: '普通用户', phone: '13100131234' },
+    { id: 10, name: '陈二', no: '010', dept: '后勤部', role: '普通用户', phone: '13000134567' },
+    { id: 11, name: '林三', no: '011', dept: '运维部', role: '普通用户', phone: '18900137890' },
+    { id: 12, name: '黄四', no: '012', dept: '技术部', role: '普通用户', phone: '18800132345' },
+    { id: 13, name: '何五', no: '013', dept: '后勤部', role: '管理员', phone: '18700135678' }
+  ],
+
+  init() {
+    this.bindEvents();
+    this.render();
+  },
+
+  // 按关键字过滤
+  filtered() {
+    const kw = this.keyword;
+    return this.data.filter(p =>
+      (!kw.name || p.name.includes(kw.name)) &&
+      (!kw.dept || p.dept === kw.dept) &&
+      (!kw.role || p.role === kw.role)
+    );
+  },
+
+  totalPages() {
+    return Math.max(1, Math.ceil(this.filtered().length / this.PAGE_SIZE));
+  },
+
+  render() {
+    const list = this.filtered();
+    if (this.currentPage > this.totalPages()) this.currentPage = this.totalPages();
+
+    const start = (this.currentPage - 1) * this.PAGE_SIZE;
+    const page = list.slice(start, start + this.PAGE_SIZE);
+    const tbody = document.getElementById('person-tbody');
+
+    if (page.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" class="empty-row">暂无数据</td></tr>';
+    } else {
+      tbody.innerHTML = page.map(p => `
+        <tr>
+          <td><input type="checkbox" class="person-check" data-id="${p.id}"></td>
+          <td>${Utils.escapeHTML(p.name)}</td>
+          <td>${Utils.escapeHTML(p.no)}</td>
+          <td>${Utils.escapeHTML(p.dept)}</td>
+          <td>${this.roleTag(p.role)}</td>
+          <td>${Utils.escapeHTML(p.phone)}</td>
+          <td>
+            <button type="button" class="btn btn-sm" data-action="edit" data-id="${p.id}"><i class="fa fa-edit"></i> 编辑</button>
+            <button type="button" class="btn btn-danger btn-sm" data-action="del" data-id="${p.id}"><i class="fa fa-trash"></i> 删除</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    this.renderPagination(list.length);
+  },
+
+  roleTag(role) {
+    const cls = role === '管理员' ? 'role-tag--admin' : 'role-tag--user';
+    return `<span class="role-tag ${cls}">${Utils.escapeHTML(role)}</span>`;
+  },
+
+  renderPagination(total) {
+    const el = document.getElementById('person-pagination');
+    if (total === 0) { el.innerHTML = ''; return; }
+
+    let html = `<span class="page-btn" data-page="prev"><i class="fa fa-chevron-left"></i></span>`;
+    for (let i = 1; i <= this.totalPages(); i++) {
+      html += `<span class="page-btn ${i === this.currentPage ? 'active' : ''}" data-page="${i}">${i}</span>`;
+    }
+    html += `<span class="page-btn" data-page="next"><i class="fa fa-chevron-right"></i></span>`;
+    html += `<span class="page-info">共 ${total} 条</span>`;
+    el.innerHTML = html;
+  },
+
+  bindEvents() {
+    document.getElementById('person-search-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      this.doSearch();
+    });
+    document.getElementById('btn-person-reset').addEventListener('click', () => {
+      document.getElementById('person-search-name').value = '';
+      document.getElementById('person-search-dept').value = '';
+      document.getElementById('person-search-role').value = '';
+      this.keyword = { name: '', dept: '', role: '' };
+      this.currentPage = 1;
+      this.render();
+    });
+
+    // 表格操作：编辑 / 删除（事件委托）
+    document.getElementById('person-tbody').addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-action]');
+      if (!btn) return;
+      const id = Number(btn.dataset.id);
+      if (btn.dataset.action === 'edit') this.openEdit(id);
+      if (btn.dataset.action === 'del') this.remove(id);
+    });
+
+    // 分页
+    document.getElementById('person-pagination').addEventListener('click', (e) => {
+      const btn = e.target.closest('.page-btn');
+      if (!btn) return;
+      const target = btn.dataset.page;
+      if (target === 'prev') this.currentPage = Math.max(1, this.currentPage - 1);
+      else if (target === 'next') this.currentPage = Math.min(this.totalPages(), this.currentPage + 1);
+      else this.currentPage = Number(target);
+      this.render();
+    });
+
+    // 添加 / 弹窗开关
+    document.getElementById('btn-person-add').addEventListener('click', () => this.openAdd());
+    document.getElementById('btn-person-save').addEventListener('click', () => this.save());
+    document.getElementById('btn-person-cancel').addEventListener('click', () => this.closeModal());
+    document.getElementById('person-modal-close').addEventListener('click', () => this.closeModal());
+    document.getElementById('person-modal-overlay').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) this.closeModal();
+    });
+
+    // 全选 / 批量删除
+    document.getElementById('person-check-all').addEventListener('change', (e) => {
+      document.querySelectorAll('.person-check').forEach(c => c.checked = e.target.checked);
+    });
+    document.getElementById('btn-person-batch-del').addEventListener('click', () => this.batchRemove());
+  },
+
+  doSearch() {
+    this.keyword = {
+      name: document.getElementById('person-search-name').value.trim(),
+      dept: document.getElementById('person-search-dept').value,
+      role: document.getElementById('person-search-role').value
+    };
+    this.currentPage = 1;
+    this.render();
+  },
+
+  openAdd() {
+    this.editingId = null;
+    document.getElementById('person-modal-title').textContent = '添加人员';
+    document.getElementById('person-name').value = '';
+    document.getElementById('person-no').value = '';
+    document.getElementById('person-dept').value = '技术部';
+    document.getElementById('person-role').value = '普通用户';
+    document.getElementById('person-phone').value = '';
+    this.showModal();
+  },
+
+  openEdit(id) {
+    const p = this.data.find(i => i.id === id);
+    if (!p) return;
+    this.editingId = id;
+    document.getElementById('person-modal-title').textContent = '编辑人员';
+    document.getElementById('person-name').value = p.name;
+    document.getElementById('person-no').value = p.no;
+    document.getElementById('person-dept').value = p.dept;
+    document.getElementById('person-role').value = p.role;
+    document.getElementById('person-phone').value = p.phone;
+    this.showModal();
+  },
+
+  save() {
+    const name = document.getElementById('person-name').value.trim();
+    const no = document.getElementById('person-no').value.trim();
+    const dept = document.getElementById('person-dept').value;
+    const role = document.getElementById('person-role').value;
+    const phone = document.getElementById('person-phone').value.trim();
+
+    if (!name || !no || !phone) {
+      alert('请填写姓名、工号和电话');
+      return;
+    }
+
+    if (this.editingId === null) {
+      const id = this.data.length ? Math.max(...this.data.map(p => p.id)) + 1 : 1;
+      this.data.push({ id, name, no, dept, role, phone });
+    } else {
+      const p = this.data.find(i => i.id === this.editingId);
+      Object.assign(p, { name, no, dept, role, phone });
+    }
+    this.closeModal();
+    this.render();
+  },
+
+  remove(id) {
+    const p = this.data.find(i => i.id === id);
+    if (!p) return;
+    if (!confirm(`确定删除「${p.name}」吗？`)) return;
+    this.data = this.data.filter(i => i.id !== id);
+    this.render();
+  },
+
+  batchRemove() {
+    const ids = [...document.querySelectorAll('.person-check:checked')].map(c => Number(c.dataset.id));
+    if (ids.length === 0) {
+      alert('请先勾选要删除的人员');
+      return;
+    }
+    if (!confirm(`确定删除选中的 ${ids.length} 位人员吗？`)) return;
+    this.data = this.data.filter(i => !ids.includes(i.id));
+    document.getElementById('person-check-all').checked = false;
+    this.render();
+  },
+
+  showModal() {
+    document.getElementById('person-modal-overlay').style.display = 'flex';
+  },
+
+  closeModal() {
+    document.getElementById('person-modal-overlay').style.display = 'none';
+  }
+};
+
+// 暴露到全局，供 router.js 按页面名调用 init
+window.PersonPage = PersonPage;

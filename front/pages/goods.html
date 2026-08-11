@@ -1,0 +1,179 @@
+<div class="search-card">
+  <div class="stock-warning" id="stock-warning" style="display:none;"></div>
+  <form class="search-form" id="goods-search-form">
+    <div class="form-item">
+      <label>耗材名称</label>
+      <input type="text" id="goods-search-name" placeholder="请输入耗材名称">
+    </div>
+    <div class="form-item">
+      <label>分类</label>
+      <select id="goods-search-category">
+        <option value="">全部</option>
+        <option value="打印耗材">打印耗材</option>
+        <option value="纸张">纸张</option>
+        <option value="电脑配件">电脑配件</option>
+        <option value="网络配件">网络配件</option>
+        <option value="存储设备">存储设备</option>
+        <option value="其他">其他</option>
+      </select>
+    </div>
+    <div class="form-item">
+      <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> 搜索</button>
+    </div>
+    <div class="form-item">
+      <button type="button" class="btn" id="btn-goods-reset"><i class="fa fa-refresh"></i> 重置</button>
+    </div>
+  </form>
+</div>
+
+<div class="table-card">
+  <div class="table-toolbar">
+    <button type="button" class="btn btn-primary btn-sm" id="btn-goods-add"><i class="fa fa-plus"></i> 添加耗材</button>
+    <button type="button" class="btn btn-sm" id="btn-goods-records"><i class="fa fa-list"></i> 全部流水</button>
+  </div>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>名称</th>
+        <th>编号</th>
+        <th>分类</th>
+        <th>库存量</th>
+        <th>单位</th>
+        <th>安全库存</th>
+        <th>状态</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody id="goods-tbody"></tbody>
+  </table>
+  <div class="pagination" id="goods-pagination"></div>
+</div>
+
+<!-- 入库/出库/归还弹窗 -->
+<div class="modal-overlay" id="stock-modal-overlay" style="display:none;">
+  <div class="modal">
+    <div class="modal-header">
+      <span id="stock-modal-title">入库</span>
+      <span class="modal-close" id="stock-modal-close"><i class="fa fa-times"></i></span>
+    </div>
+    <div class="modal-body">
+      <div class="form-item">
+        <label>耗材</label>
+        <select id="stock-goods"></select>
+      </div>
+      <div class="form-item">
+        <label>数量</label>
+        <input type="number" id="stock-quantity" min="1" placeholder="请输入数量">
+      </div>
+      <div class="form-item">
+        <label>日期</label>
+        <input type="date" id="stock-date">
+      </div>
+      <div class="form-item">
+        <label id="stock-operator-label">经办人</label>
+        <input type="text" id="stock-operator" placeholder="当前操作人">
+      </div>
+      <div class="form-item">
+        <label>备注</label>
+        <input type="text" id="stock-remark" placeholder="选填">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" id="btn-stock-save">保存</button>
+      <button type="button" class="btn" id="btn-stock-cancel">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- 库存流水弹窗 -->
+<div class="modal-overlay" id="stock-records-modal-overlay" style="display:none;">
+  <div class="modal modal-wide">
+    <div class="modal-header">
+      <span id="stock-records-modal-title">库存流水</span>
+      <span class="modal-close" id="stock-records-modal-close"><i class="fa fa-times"></i></span>
+    </div>
+    <div class="modal-body">
+      <form class="search-form" id="stock-search-form">
+        <div class="form-item">
+          <label>耗材</label>
+          <select id="stock-search-goods"></select>
+        </div>
+        <div class="form-item">
+          <label>开始日期</label>
+          <input type="date" id="stock-search-start">
+        </div>
+        <div class="form-item">
+          <label>结束日期</label>
+          <input type="date" id="stock-search-end">
+        </div>
+        <div class="form-item">
+          <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> 查询</button>
+        </div>
+        <div class="form-item">
+          <button type="button" class="btn" id="btn-stock-reset"><i class="fa fa-refresh"></i> 重置</button>
+        </div>
+      </form>
+      <table class="data-table stock-records-table">
+        <thead>
+          <tr>
+            <th>日期</th>
+            <th>耗材</th>
+            <th>类型</th>
+            <th>数量</th>
+            <th>操作人</th>
+            <th>备注</th>
+          </tr>
+        </thead>
+        <tbody id="stock-tbody"></tbody>
+      </table>
+      <div class="pagination" id="stock-pagination"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 添加/编辑耗材弹窗 -->
+<div class="modal-overlay" id="goods-modal-overlay" style="display:none;">
+  <div class="modal">
+    <div class="modal-header">
+      <span id="goods-modal-title">添加耗材</span>
+      <span class="modal-close" id="goods-modal-close"><i class="fa fa-times"></i></span>
+    </div>
+    <div class="modal-body">
+      <div class="form-item">
+        <label>名称</label>
+        <input type="text" id="goods-name" placeholder="请输入耗材名称">
+      </div>
+      <div class="form-item">
+        <label>编号</label>
+        <input type="text" id="goods-no" placeholder="请输入编号">
+      </div>
+      <div class="form-item">
+        <label>分类</label>
+        <select id="goods-category">
+          <option value="打印耗材">打印耗材</option>
+          <option value="纸张">纸张</option>
+          <option value="电脑配件">电脑配件</option>
+          <option value="网络配件">网络配件</option>
+          <option value="存储设备">存储设备</option>
+          <option value="其他">其他</option>
+        </select>
+      </div>
+      <div class="form-item">
+        <label>单位</label>
+        <input type="text" id="goods-unit" placeholder="如：个 / 盒 / 包">
+      </div>
+      <div class="form-item">
+        <label>库存量</label>
+        <input type="number" id="goods-stock-count" min="0" placeholder="当前库存量">
+      </div>
+      <div class="form-item">
+        <label>安全库存</label>
+        <input type="number" id="goods-safe-stock" min="0" placeholder="低于此值预警">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" id="btn-goods-save">保存</button>
+      <button type="button" class="btn" id="btn-goods-cancel">取消</button>
+    </div>
+  </div>
+</div>
