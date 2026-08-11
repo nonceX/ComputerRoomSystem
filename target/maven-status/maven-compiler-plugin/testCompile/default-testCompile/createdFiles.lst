@@ -1,0 +1,5 @@
+com/cheng/ComputerRoomSystem/equipment/EquipmentServiceTests.class
+com/cheng/ComputerRoomSystem/attendance/AttendanceServiceTests.class
+com/cheng/ComputerRoomSystem/ComputerRoomSystemApplicationTests.class
+com/cheng/ComputerRoomSystem/goods/GoodsServiceTests.class
+com/cheng/ComputerRoomSystem/dashboard/DashboardServiceTests.class
